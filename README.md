@@ -1,4 +1,4 @@
-# Lumina Spa – Skincare Routine App
+# Skincare Scoop
 
 A mobile-friendly web app for organizing skincare routines.
 
@@ -9,14 +9,13 @@ A mobile-friendly web app for organizing skincare routines.
 - Twice-daily and professional facial reminders
 - Spa-inspired beige & purple design
 
-## Open the app
-1. Open **index.html** in this repo and view the file, or
-2. Enable **GitHub Pages**:
-   - Go to **Settings → Pages**
-   - Source: Deploy from a branch
-   - Branch: `main` / folder: `/ (root)`
-   - Save, then open:
-     `https://cbradford1212.github.io/lumina-spa-skincare/`
+## Live app
+Enable **GitHub Pages** (Settings → Pages → Deploy from branch `main` / root), then open:
+
+**https://cbradford1212.github.io/lumina-spa-skincare/**
+
+## Files
+- `index.html` — the full app (open in a browser or via GitHub Pages)
 
 ## Tip
-For permanent storage and reliable notifications, open the app over **https** (GitHub Pages) rather than as a local `file://` download.
+For permanent storage and reliable notifications, use the **https** Pages URL rather than a local `file://` download.
