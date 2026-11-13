@@ -1,0 +1,1845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#1a1614" />
+  <title>Skincare Scoop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4efe8;
+      --surface: #fbf8f4;
+      --primary: #2c2420;
+      --primary-deep: #1a1614;
+      --primary-soft: #ebe4da;
+      --primary-light: #c9b89a;
+      --gold: #b89b6a;
+      --gold-soft: #f0e6d4;
+      --beige: #e8dfd2;
+      --beige-dark: #d4c6b0;
+      --text: #1f1a17;
+      --text-muted: #7a7068;
+      --border: #e5ddd2;
+      --danger: #a34d52;
+      --warning: #b89b6a;
+      --success: #5a7a62;
+      --shadow: 0 8px 32px rgba(26, 22, 20, 0.06);
+      --shadow-lg: 0 16px 48px rgba(26, 22, 20, 0.1);
+      --radius: 16px;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+    }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse at 20% 0%, rgba(184, 155, 106, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 100%, rgba(26, 22, 20, 0.03) 0%, transparent 40%);
+      color: var(--text); min-height: 100dvh;
+      padding-bottom: calc(88px + var(--safe-bottom));
+      padding-top: env(safe-area-inset-top, 0px);
+      line-height: 1.45;
+      font-weight: 400; letter-spacing: 0.01em;
+      -webkit-font-smoothing: antialiased;
+      font-size: 15px;
+    }
+    .app-shell {
+      width: 100%;
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100dvh;
+      position: relative;
+    }
+    .header {
+      background: linear-gradient(165deg, #1a1614 0%, #2c2420 45%, #3d342e 100%);
+      color: #f7f2ea; padding: 14px 16px 14px; position: sticky; top: 0; z-index: 50;
+      box-shadow: 0 8px 28px rgba(26, 22, 20, 0.3);
+      border-bottom: 1px solid rgba(184, 155, 106, 0.25);
+    }
+    .header h1 {
+      font-family: var(--font-display); font-size: 1.55rem; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: none; font-style: italic;
+      line-height: 1.15;
+    }
+    .header p {
+      font-size: 0.65rem; opacity: 0.7; margin-top: 3px;
+      letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300;
+    }
+    .search-wrap { margin-top: 10px; position: relative; }
+    .search-wrap input {
+      width: 100%; padding: 10px 12px 10px 38px; border-radius: 10px; border: 1px solid rgba(184, 155, 106, 0.35);
+      background: rgba(255,255,255,0.08); color: #f7f2ea; font-size: 0.88rem; font-family: inherit;
+      backdrop-filter: blur(8px); letter-spacing: 0.02em;
+    }
+    .search-wrap input::placeholder { color: rgba(247,242,234,0.45); font-weight: 300; }
+    .search-wrap input:focus { outline: none; background: rgba(255,255,255,0.12); border-color: rgba(184, 155, 106, 0.55); }
+    .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.55; font-size: 0.88rem; pointer-events: none; }
+    .tabs {
+      display: flex; gap: 5px; padding: 10px 12px 8px; overflow-x: auto; scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      flex: 1 1 0; min-width: 0; padding: 8px 6px; border-radius: 999px; border: 1px solid var(--border);
+      background: transparent; color: var(--text-muted); font-weight: 400; font-size: 0.72rem;
+      cursor: pointer; transition: all 0.25s ease; letter-spacing: 0.02em; font-family: var(--font-body);
+      white-space: nowrap; text-align: center;
+    }
+    .tab.active {
+      background: var(--primary-deep); border-color: var(--primary-deep); color: #f7f2ea;
+      box-shadow: 0 3px 12px rgba(26, 22, 20, 0.18);
+    }
+    .compat-banner {
+      margin: 0 12px 10px; padding: 10px 12px; border-radius: 10px; background: var(--gold-soft); border: 1px solid rgba(184, 155, 106, 0.35);
+      display: none; font-size: 0.78rem; color: #6b5638; line-height: 1.4;
+    }
+    .compat-banner.visible { display: block; }
+    .compat-banner strong { color: #4a3c28; font-weight: 500; }
+    .compat-banner ul { margin: 6px 0 0 16px; padding: 0; }
+    .compat-ok { background: #eef4ef; border-color: #c5d4c8; color: #3d5a45; }
+    .compat-ok strong { color: #2d4a35; }
+    .routine-section { padding: 2px 12px 24px; display: none; }
+    .routine-section.active { display: block; }
+    .routine-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 8px; }
+    .routine-title {
+      font-family: var(--font-display); font-size: 1.25rem; font-weight: 500;
+      color: var(--text); letter-spacing: 0.02em; font-style: italic;
+      line-height: 1.2;
+    }
+    .product-count {
+      font-size: 0.65rem; color: var(--gold); background: var(--gold-soft);
+      padding: 4px 9px; border-radius: 999px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .product-list { display: flex; flex-direction: column; gap: 10px; }
+    .product-card {
+      background: var(--surface); border-radius: 14px; padding: 14px;
+      box-shadow: var(--shadow); border: 1px solid rgba(229, 221, 210, 0.9);
+      transition: transform 0.15s ease, box-shadow 0.2s ease;
+    }
+    .product-card:active { transform: scale(0.988); }
+    .product-card.hidden-by-search { display: none; }
+    .product-top { display: flex; gap: 10px; align-items: flex-start; }
+    .product-order {
+      width: 28px; height: 28px;
+      background: linear-gradient(145deg, var(--primary-deep), #3d342e);
+      color: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 500; font-size: 0.75rem; flex-shrink: 0;
+      border: 1px solid rgba(184, 155, 106, 0.4); font-family: var(--font-display);
+    }
+    .product-info { flex: 1; min-width: 0; overflow-wrap: anywhere; word-break: break-word; }
+    .product-name {
+      font-family: var(--font-display); font-weight: 600; font-size: 1.05rem;
+      color: var(--text); margin-bottom: 2px; letter-spacing: 0.01em;
+      line-height: 1.25;
+    }
+    .product-brand {
+      font-size: 0.68rem; color: var(--gold); margin-bottom: 8px;
+      letter-spacing: 0.08em; text-transform: uppercase; font-weight: 400;
+    }
+    .product-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem;
+      font-weight: 500; padding: 4px 10px; border-radius: 6px; letter-spacing: 0.03em;
+    }
+    .badge-freq { background: var(--primary-soft); color: var(--primary-deep); }
+    .badge-ingredient { background: var(--gold-soft); color: #6b5638; font-weight: 400; }
+    .product-instructions { font-size: 0.88rem; color: var(--text-muted); line-height: 1.55; white-space: pre-wrap; font-weight: 300; }
+    .ingredients-toggle {
+      margin-top: 10px; font-size: 0.78rem; font-weight: 500; color: var(--gold); background: none; border: none;
+      cursor: pointer; padding: 0; display: inline-flex; align-items: center; gap: 4px; letter-spacing: 0.04em;
+    }
+    .ingredients-list {
+      display: none; margin-top: 8px; padding: 12px 14px; background: var(--bg); border-radius: 10px;
+      font-size: 0.8rem; color: var(--text-muted); line-height: 1.55; white-space: pre-wrap; font-weight: 300;
+      border: 1px solid var(--border);
+    }
+    .ingredients-list.open { display: block; }
+    .product-actions {
+      display: flex; gap: 6px; margin-top: 10px; padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+    .btn-icon {
+      width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--border);
+      background: transparent; color: var(--text-muted);
+      display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.88rem; transition: all 0.15s;
+    }
+    .btn-icon:active { background: var(--primary-soft); color: var(--primary-deep); border-color: var(--primary-light); }
+    .btn-icon.danger:active { background: #f5e8e9; color: var(--danger); border-color: #e8c8cb; }
+    .empty-state { text-align: center; padding: 56px 28px; color: var(--text-muted); }
+    .empty-state .icon { font-size: 2.4rem; margin-bottom: 14px; opacity: 0.4; }
+    .empty-state h3 {
+      font-family: var(--font-display); font-size: 1.4rem; color: var(--text);
+      margin-bottom: 8px; font-weight: 500; font-style: italic;
+    }
+    .empty-state p { font-size: 0.88rem; font-weight: 300; letter-spacing: 0.02em; }
+    .no-results { text-align: center; padding: 32px 16px; color: var(--text-muted); font-size: 0.92rem; display: none; font-weight: 300; }
+    .fab-group {
+      position: fixed; bottom: calc(16px + var(--safe-bottom));
+      right: max(14px, calc(50% - 215px + 14px));
+      display: flex; flex-direction: column; gap: 10px; z-index: 40;
+    }
+    .fab {
+      width: 52px; height: 52px; border-radius: 50%; border: none;
+      box-shadow: 0 8px 22px rgba(26, 22, 20, 0.28);
+      font-size: 1.35rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s;
+    }
+    .fab-main {
+      background: linear-gradient(145deg, #1a1614, #3d342e); color: var(--gold);
+      border: 1px solid rgba(184, 155, 106, 0.4);
+    }
+    .fab-compat, .fab-remind {
+      background: var(--surface); color: var(--primary-deep); border: 1px solid var(--border);
+      width: 42px; height: 42px; font-size: 1.05rem; box-shadow: var(--shadow);
+    }
+    .fab:active { transform: scale(0.92); }
+    .reminder-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 12px;
+    }
+    .reminder-card h3 { font-size: 0.95rem; margin-bottom: 8px; color: var(--text); }
+    .reminder-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+    .reminder-row label { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+    .reminder-row input[type="time"], .reminder-row select {
+      padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 0.9rem;
+      font-family: inherit; background: var(--bg); color: var(--text);
+    }
+    .toggle {
+      width: 46px; height: 28px; border-radius: 999px; background: var(--beige-dark); border: none; position: relative;
+      cursor: pointer; transition: background 0.2s; flex-shrink: 0;
+    }
+    .toggle.on { background: var(--primary); }
+    .toggle::after {
+      content: ''; position: absolute; width: 22px; height: 22px; border-radius: 50%; background: white;
+      top: 3px; left: 3px; transition: transform 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    }
+    .toggle.on::after { transform: translateX(18px); }
+    .reminder-status {
+      font-size: 0.8rem; color: var(--text-muted); margin-top: 6px; line-height: 1.4;
+    }
+    .reminder-status.active { color: var(--success); }
+    /* Journal calendar */
+    .cal-header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;
+    }
+    .cal-header h2 { font-family: var(--font-display); font-size: 1.45rem; font-weight: 500; font-style: italic; }
+    .cal-nav {
+      display: flex; gap: 8px;
+    }
+    .cal-nav button {
+      width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
+      background: var(--surface); color: var(--primary-deep); font-size: 1rem; cursor: pointer;
+    }
+    .cal-nav button:active { transform: scale(0.94); }
+    .cal-weekdays {
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 6px;
+      text-align: center; font-size: 0.68rem; font-weight: 500; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .cal-grid {
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;
+    }
+    .cal-day {
+      aspect-ratio: 1; max-height: 48px; border-radius: 10px; border: 1px solid transparent;
+      background: var(--surface); display: flex; flex-direction: column; align-items: center; justify-content: center;
+      cursor: pointer; position: relative; font-size: 0.8rem; font-weight: 400; color: var(--text);
+      transition: background 0.15s, border-color 0.15s; font-family: var(--font-display);
+      min-height: 0; padding: 2px;
+    }
+    .cal-day.other-month { opacity: 0.3; }
+    .cal-day.today { border-color: var(--gold); background: var(--gold-soft); color: var(--primary-deep); font-weight: 600; }
+    .cal-day.has-entry { background: var(--primary-soft); border-color: var(--beige-dark); }
+    .cal-day.has-entry.today { background: var(--gold-soft); border-color: var(--gold); }
+    .cal-day:active { transform: scale(0.94); }
+    .cal-dots {
+      display: flex; gap: 3px; margin-top: 3px; min-height: 6px;
+    }
+    .cal-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+    }
+    .cal-dot.concern { background: var(--danger); }
+    .cal-dot.factor { background: var(--gold); }
+    .journal-legend {
+      display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.03em;
+    }
+    .journal-legend span { display: flex; align-items: center; gap: 6px; }
+    .journal-legend i {
+      width: 8px; height: 8px; border-radius: 50%; display: inline-block;
+    }
+    .chip-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip-grid .chip {
+      padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border);
+      background: transparent; font-size: 0.8rem; cursor: pointer; color: var(--text-muted); user-select: none;
+      letter-spacing: 0.02em; font-weight: 400;
+    }
+    .chip-grid .chip.selected {
+      background: var(--primary-deep); border-color: var(--primary-deep); color: #f7f2ea; font-weight: 400;
+    }
+    .journal-hint {
+      font-size: 0.84rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.45; font-weight: 300;
+    }
+    .shelf-assign {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);
+    }
+    .shelf-check {
+      display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px;
+      border: 1px solid var(--border); background: transparent; font-size: 0.78rem; color: var(--text-muted);
+      cursor: pointer; user-select: none; letter-spacing: 0.02em;
+    }
+    .shelf-check input { accent-color: var(--primary-deep); width: 14px; height: 14px; }
+    .shelf-check.on {
+      background: var(--gold-soft); border-color: var(--gold); color: var(--primary-deep); font-weight: 500;
+    }
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(26, 22, 20, 0.5); backdrop-filter: blur(8px); z-index: 100;
+      display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: auto; }
+    .modal {
+      background: var(--surface); width: 100%; max-width: 430px; border-radius: 18px 18px 0 0;
+      padding: 16px 16px calc(18px + var(--safe-bottom)); max-height: 88dvh; overflow-y: auto;
+      transform: translateY(100%); transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+      border-top: 1px solid rgba(184, 155, 106, 0.25);
+      -webkit-overflow-scrolling: touch;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-handle { width: 36px; height: 3px; background: var(--beige-dark); border-radius: 2px; margin: 0 auto 18px; }
+    .modal h2 {
+      font-family: var(--font-display); font-size: 1.55rem; font-weight: 500; margin-bottom: 18px;
+      color: var(--text); font-style: italic; letter-spacing: 0.02em;
+    }
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block; font-size: 0.72rem; font-weight: 500; color: var(--text-muted);
+      margin-bottom: 8px; letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .form-group input, .form-group textarea {
+      width: 100%; padding: 13px 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 0.95rem;
+      font-family: inherit; background: var(--bg); color: var(--text); transition: border-color 0.2s; font-weight: 400;
+    }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--gold); }
+    .form-group textarea { min-height: 80px; resize: vertical; }
+    .modal-actions { display: flex; gap: 12px; margin-top: 22px; }
+    .btn {
+      flex: 1; padding: 14px; border-radius: 10px; font-weight: 500; font-size: 0.88rem;
+      border: none; cursor: pointer; letter-spacing: 0.06em; text-transform: uppercase; font-family: var(--font-body);
+    }
+    .btn-primary {
+      background: linear-gradient(145deg, #1a1614, #3d342e); color: var(--gold);
+      border: 1px solid rgba(184, 155, 106, 0.35);
+    }
+    .btn-secondary {
+      background: transparent; color: var(--text-muted); border: 1px solid var(--border);
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border); background: transparent;
+      font-size: 0.8rem; font-weight: 400; cursor: pointer; transition: all 0.15s; color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+    .chip.selected { background: var(--primary-deep); border-color: var(--primary-deep); color: #f7f2ea; }
+    .chip.ingredient.selected { background: var(--gold-soft); border-color: var(--gold); color: #5a4a32; }
+    .routine-select { display: flex; gap: 8px; }
+    .routine-opt {
+      flex: 1; padding: 12px 6px; text-align: center; border-radius: 10px; border: 1px solid var(--border);
+      font-weight: 400; font-size: 0.78rem; cursor: pointer; background: transparent; color: var(--text-muted);
+      letter-spacing: 0.03em;
+    }
+    .routine-opt.selected {
+      background: var(--primary-deep); border-color: var(--primary-deep); color: #f7f2ea;
+    }
+    .catalog-search-row { display: flex; gap: 8px; margin-bottom: 10px; }
+    .catalog-search-row input { flex: 1; }
+    .btn-sm {
+      padding: 12px 16px; border-radius: 10px; font-weight: 500; font-size: 0.8rem; border: none; cursor: pointer;
+      background: var(--primary-deep); color: var(--gold); white-space: nowrap; letter-spacing: 0.04em;
+    }
+    .catalog-results {
+      max-height: 280px; overflow-y: auto; margin-bottom: 12px; border-radius: 10px; border: 1px solid var(--border); display: none;
+    }
+    .catalog-results.visible { display: block; }
+    .catalog-item { padding: 12px 14px; border-bottom: 1px solid var(--border); cursor: pointer; }
+    .catalog-item:last-child { border-bottom: none; }
+    .catalog-item:active { background: var(--gold-soft); }
+    .catalog-item-name { font-family: var(--font-display); font-weight: 600; font-size: 1rem; color: var(--text); }
+    .catalog-item-brand { font-size: 0.72rem; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; }
+    .catalog-item-ing { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 300; }
+    .catalog-status { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; display: none; font-weight: 300; }
+    .catalog-status.visible { display: block; }
+    .compat-pair { background: var(--bg); border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; border-left: 2px solid var(--gold); }
+    .compat-pair.ok { border-left-color: var(--success); }
+    .compat-pair h4 { font-family: var(--font-display); font-size: 1.05rem; margin-bottom: 4px; color: var(--text); font-weight: 600; }
+    .compat-pair p { font-size: 0.84rem; color: var(--text-muted); line-height: 1.45; font-weight: 300; }
+    .disclaimer { font-size: 0.72rem; color: var(--text-muted); margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); line-height: 1.45; font-weight: 300; letter-spacing: 0.02em; }
+    .toast {
+      position: fixed; bottom: calc(78px + var(--safe-bottom)); left: 50%; transform: translateX(-50%) translateY(16px);
+      background: var(--primary-deep); color: #f7f2ea; padding: 11px 18px; border-radius: 10px; font-size: 0.8rem; font-weight: 400;
+      opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 200; max-width: min(90vw, 360px); text-align: center;
+      border: 1px solid rgba(184, 155, 106, 0.3); letter-spacing: 0.03em;
+    }
+    img, svg, video { max-width: 100%; height: auto; }
+    input, textarea, select, button { max-width: 100%; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toggle.on { background: var(--primary-deep); }
+    .reminder-status.active { color: var(--gold); }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <header class="header">
+    <h1>Skincare Scoop</h1>
+    <p>Rituals · Products · Insight</p>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="search" id="global-search" placeholder="Search your products…" autocomplete="off" />
+    </div>
+  </header>
+  <div id="storage-banner" style="display:none;margin:10px 16px 0;padding:10px 14px;border-radius:12px;background:#fdf6e9;border:1px solid #e8d4b0;font-size:0.82rem;color:#7a5c30;line-height:1.4;">
+    <strong>Session-only mode.</strong> This browser is blocking saved storage (common when opening the file directly). Products will appear while this tab is open, but will disappear if you refresh or close it. For permanent saves, open the file via a local web server or host it.
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-routine="morning">Morning</button>
+    <button class="tab" data-routine="evening">Evening</button>
+    <button class="tab" data-routine="shelf">Products</button>
+    <button class="tab" data-routine="journal">Journal</button>
+  </div>
+
+  <div id="routines-container">
+    <section class="routine-section active" id="routine-morning">
+      <div class="compat-banner" id="compat-morning"></div>
+      <div class="routine-header">
+        <h2 class="routine-title">Morning Ritual</h2>
+        <span class="product-count" id="count-morning">0 products</span>
+      </div>
+      <div class="product-list" id="list-morning"></div>
+      <div class="empty-state" id="empty-morning">
+        <div class="icon">🌿</div>
+        <h3>Your morning ritual awaits</h3>
+        <p>Tap + to add cleansers, serums, SPF and more</p>
+      </div>
+      <div class="no-results" id="no-results-morning">No matching products in this ritual</div>
+    </section>
+    <section class="routine-section" id="routine-evening">
+      <div class="compat-banner" id="compat-evening"></div>
+      <div class="routine-header">
+        <h2 class="routine-title">Evening Ritual</h2>
+        <span class="product-count" id="count-evening">0 products</span>
+      </div>
+      <div class="product-list" id="list-evening"></div>
+      <div class="empty-state" id="empty-evening">
+        <div class="icon">🌙</div>
+        <h3>Wind down with care</h3>
+        <p>Add your evening cleanse, treatments & moisturizers</p>
+      </div>
+      <div class="no-results" id="no-results-evening">No matching products in this ritual</div>
+    </section>
+    <section class="routine-section" id="routine-shelf">
+      <div class="routine-header">
+        <h2 class="routine-title">All Products</h2>
+        <span class="product-count" id="count-shelf">0 products</span>
+      </div>
+      <p class="journal-hint">Everything you own or have used. Check Morning / Evening to add a product to that ritual.</p>
+      <div class="product-list" id="list-shelf"></div>
+      <div class="empty-state" id="empty-shelf">
+        <div class="icon">🧴</div>
+        <h3>Your shelf is empty</h3>
+        <p>Add products with + — they’ll appear here even after you remove them from a ritual</p>
+      </div>
+      <div class="no-results" id="no-results-shelf">No matching products</div>
+    </section>
+    <section class="routine-section" id="routine-journal">
+      <div class="cal-header">
+        <h2 id="cal-month-label">November 2026</h2>
+        <div class="cal-nav">
+          <button type="button" id="cal-prev" aria-label="Previous month">‹</button>
+          <button type="button" id="cal-next" aria-label="Next month">›</button>
+        </div>
+      </div>
+      <p class="journal-hint">Tap a day to log skin concerns and lifestyle factors.</p>
+      <div class="cal-weekdays">
+        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <div class="journal-legend">
+        <span><i style="background:#b85c6a"></i> Skin concern</span>
+        <span><i style="background:#7c6a9a"></i> Lifestyle factor</span>
+        <span><i style="background:var(--primary);border-radius:2px;width:10px;height:10px"></i> Today</span>
+      </div>
+    </section>
+  </div>
+
+  <div class="fab-group">
+    <button class="fab fab-remind" id="fab-remind" title="Reminders" aria-label="Reminders">🔔</button>
+    <button class="fab fab-compat" id="fab-compat" title="Check ingredient compatibility" aria-label="Compatibility">⚖️</button>
+    <button class="fab fab-main" id="fab" aria-label="Add product">+</button>
+  </div>
+
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <h2 id="modal-title">Add Product</h2>
+
+      <div class="form-group">
+        <label>Search product catalog (Open Beauty Facts)</label>
+        <div class="catalog-search-row">
+          <input type="search" id="catalog-query" placeholder="e.g. CeraVe Hydrating Cleanser" />
+          <button type="button" class="btn-sm" id="btn-catalog-search">Search</button>
+        </div>
+        <div class="catalog-status" id="catalog-status"></div>
+        <div class="catalog-results" id="catalog-results"></div>
+      </div>
+
+      <div class="form-group">
+        <label>Which ritual?</label>
+        <div class="routine-select" id="routine-select">
+          <div class="routine-opt selected" data-value="morning">☀️ Morning</div>
+          <div class="routine-opt" data-value="evening">🌙 Evening</div>
+          <div class="routine-opt" data-value="shelf">🧴 Shelf only</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="product-name">Product Name *</label>
+        <input type="text" id="product-name" placeholder="e.g. Gentle Hydrating Cleanser" required />
+      </div>
+
+      <div class="form-group">
+        <label for="product-brand">Brand (optional)</label>
+        <input type="text" id="product-brand" placeholder="e.g. CeraVe, The Ordinary" />
+      </div>
+
+      <div class="form-group">
+        <label>How often?</label>
+        <div class="chips" id="freq-chips">
+          <div class="chip selected" data-value="AM">AM</div>
+          <div class="chip" data-value="PM">PM</div>
+          <div class="chip" data-value="AM + PM">AM + PM</div>
+          <div class="chip" data-value="2–3× / week">2–3× / week</div>
+          <div class="chip" data-value="1× / week">1× / week</div>
+          <div class="chip" data-value="As needed">As needed</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Key actives (for compatibility)</label>
+        <div class="chips" id="ingredient-chips">
+          <div class="chip ingredient" data-value="Vitamin C">Vitamin C</div>
+          <div class="chip ingredient" data-value="Retinol / Retinoid">Retinol / Retinoid</div>
+          <div class="chip ingredient" data-value="Niacinamide">Niacinamide</div>
+          <div class="chip ingredient" data-value="AHA">AHA</div>
+          <div class="chip ingredient" data-value="BHA">BHA</div>
+          <div class="chip ingredient" data-value="Benzoyl Peroxide">Benzoyl Peroxide</div>
+          <div class="chip ingredient" data-value="Peptides">Peptides</div>
+          <div class="chip ingredient" data-value="Copper Peptides">Copper Peptides</div>
+          <div class="chip ingredient" data-value="Hyaluronic Acid">Hyaluronic Acid</div>
+          <div class="chip ingredient" data-value="SPF">SPF</div>
+          <div class="chip ingredient" data-value="Ceramide">Ceramide</div>
+          <div class="chip ingredient" data-value="Azelaic Acid">Azelaic Acid</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="product-ingredients-text">Full ingredient list (optional)</label>
+        <textarea id="product-ingredients-text" placeholder="Paste the full INCI list here, e.g. Aqua, Glycerin, Niacinamide, ..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="product-instructions">How to use / Instructions</label>
+        <textarea id="product-instructions" placeholder="e.g. Apply 2–3 drops to clean, dry skin. Wait 1–2 minutes before next step."></textarea>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="btn-cancel">Cancel</button>
+        <button class="btn btn-primary" id="btn-save">Save Product</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="compat-modal-overlay">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <h2>Ingredient Compatibility</h2>
+      <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:16px;">
+        Checking products in your <strong id="compat-routine-name">Morning</strong> ritual for known conflicts.
+      </p>
+      <div id="compat-results"></div>
+      <p class="disclaimer">
+        Educational guidance based on common skincare principles. Individual tolerance varies. When in doubt, consult a dermatologist.
+      </p>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="btn-compat-close" style="flex:1">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reminders Modal -->
+  <div class="modal-overlay" id="remind-modal-overlay">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <h2>Reminders</h2>
+      <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:16px;">
+        Set gentle nudges for your daily routine and professional facials. Notifications work best when the app is open or installed as a home-screen web app.
+      </p>
+
+      <div class="reminder-card">
+        <h3>☀️🌙 Twice-daily skincare</h3>
+        <div class="reminder-row">
+          <label>Enable</label>
+          <button type="button" class="toggle" id="toggle-daily" aria-label="Toggle daily reminders"></button>
+        </div>
+        <div class="reminder-row">
+          <label>Morning time</label>
+          <input type="time" id="time-am" value="07:30" />
+        </div>
+        <div class="reminder-row">
+          <label>Evening time</label>
+          <input type="time" id="time-pm" value="21:00" />
+        </div>
+        <div class="reminder-status" id="status-daily">Off</div>
+      </div>
+
+      <div class="reminder-card">
+        <h3>💆 Professional facial</h3>
+        <div class="reminder-row">
+          <label>Enable</label>
+          <button type="button" class="toggle" id="toggle-facial" aria-label="Toggle facial reminders"></button>
+        </div>
+        <div class="reminder-row">
+          <label>How often?</label>
+          <select id="facial-interval">
+            <option value="weekly">Weekly</option>
+            <option value="monthly" selected>Monthly</option>
+            <option value="quarterly">Quarterly (every 3 months)</option>
+          </select>
+        </div>
+        <div class="reminder-row">
+          <label>Next facial date</label>
+          <input type="date" id="facial-next" />
+        </div>
+        <div class="reminder-status" id="status-facial">Off</div>
+      </div>
+
+      <p class="disclaimer" style="margin-top:8px;">
+        Browsers only show notifications when permission is granted. On iPhone, add this page to your Home Screen for more reliable reminders.
+      </p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="btn-remind-cancel">Close</button>
+        <button class="btn btn-primary" id="btn-remind-save">Save reminders</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Journal day modal -->
+  <div class="modal-overlay" id="journal-modal-overlay">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <h2 id="journal-day-title">Log day</h2>
+      <p class="journal-hint" id="journal-day-sub">Track how your skin felt and what may have influenced it.</p>
+
+      <div class="form-group">
+        <label>Skin concerns</label>
+        <div class="chip-grid" id="concern-chips">
+          <div class="chip" data-value="Breakouts">Breakouts</div>
+          <div class="chip" data-value="Rashes">Rashes</div>
+          <div class="chip" data-value="Dryness">Dryness</div>
+          <div class="chip" data-value="Oiliness">Oiliness</div>
+          <div class="chip" data-value="Redness">Redness</div>
+          <div class="chip" data-value="Itchiness">Itchiness</div>
+          <div class="chip" data-value="Sensitivity">Sensitivity</div>
+          <div class="chip" data-value="Dullness">Dullness</div>
+          <div class="chip" data-value="Dark spots">Dark spots</div>
+          <div class="chip" data-value="Texture">Texture</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Lifestyle &amp; other factors</label>
+        <div class="chip-grid" id="factor-chips">
+          <div class="chip" data-value="Menstrual cycle">Menstrual cycle</div>
+          <div class="chip" data-value="Stress">Stress</div>
+          <div class="chip" data-value="Lack of sleep">Lack of sleep</div>
+          <div class="chip" data-value="Poor diet">Poor diet</div>
+          <div class="chip" data-value="New medication">New medication</div>
+          <div class="chip" data-value="Alcohol">Alcohol</div>
+          <div class="chip" data-value="Sun exposure">Sun exposure</div>
+          <div class="chip" data-value="Travel">Travel</div>
+          <div class="chip" data-value="Skipped routine">Skipped routine</div>
+          <div class="chip" data-value="New product">New product</div>
+          <div class="chip" data-value="Professional facial">Professional facial</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="journal-note">Notes (optional)</label>
+        <textarea id="journal-note" placeholder="e.g. Chin breakout after late night, started new serum…"></textarea>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="btn-journal-clear">Clear day</button>
+        <button class="btn btn-primary" id="btn-journal-save">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+  <script>
+    const CONFLICTS = [
+      { pair: ['Retinol / Retinoid', 'AHA'], level: 'caution', note: 'Both increase cell turnover and can cause significant irritation when layered. Consider alternating nights or buffering.' },
+      { pair: ['Retinol / Retinoid', 'BHA'], level: 'caution', note: 'Combining retinol with BHA may heighten irritation. Many prefer alternate nights.' },
+      { pair: ['Retinol / Retinoid', 'Benzoyl Peroxide'], level: 'caution', note: 'Benzoyl peroxide can oxidize some retinoids. Separate by time of day when possible.' },
+      { pair: ['Vitamin C', 'Copper Peptides'], level: 'caution', note: 'Vitamin C and copper peptides can interact and reduce effectiveness. Apply at different times of day.' },
+      { pair: ['Vitamin C', 'Retinol / Retinoid'], level: 'info', note: 'Often separated by time of day (Vitamin C AM, retinol PM) due to pH differences, though many modern formulas coexist well.' },
+      { pair: ['Vitamin C', 'Niacinamide'], level: 'info', note: 'Older concerns have largely been debunked at typical concentrations. Most people tolerate them together.' },
+      { pair: ['AHA', 'BHA'], level: 'info', note: 'Can be used together, but strong percentages may increase irritation. Start slowly.' },
+      { pair: ['Benzoyl Peroxide', 'Vitamin C'], level: 'caution', note: 'BP can oxidize pure Vitamin C. Space them apart (e.g. BP PM, Vitamin C AM).' }
+    ];
+
+    const KEY_INGREDIENT_MAP = {
+      'vitamin c': 'Vitamin C', 'ascorbic acid': 'Vitamin C', 'ascorbyl': 'Vitamin C',
+      'retinol': 'Retinol / Retinoid', 'retinal': 'Retinol / Retinoid', 'retinoid': 'Retinol / Retinoid', 'tretinoin': 'Retinol / Retinoid',
+      'niacinamide': 'Niacinamide',
+      'glycolic': 'AHA', 'lactic acid': 'AHA', 'mandelic': 'AHA', 'aha': 'AHA',
+      'salicylic': 'BHA', 'bha': 'BHA',
+      'benzoyl peroxide': 'Benzoyl Peroxide',
+      'peptide': 'Peptides',
+      'copper peptide': 'Copper Peptides', 'ghk-cu': 'Copper Peptides',
+      'hyaluronic': 'Hyaluronic Acid', 'sodium hyaluronate': 'Hyaluronic Acid',
+      'ceramide': 'Ceramide',
+      'azelaic': 'Azelaic Acid',
+      'spf': 'SPF', 'titanium dioxide': 'SPF', 'zinc oxide': 'SPF', 'avobenzone': 'SPF'
+    };
+
+    const STORAGE_KEY = 'skincare-scoop-data-v1';
+    const JOURNAL_KEY = 'skincare-scoop-journal-v1';
+    let data = { morning: [], evening: [], shelf: [] };
+    let journal = {}; // { 'YYYY-MM-DD': { concerns: [], factors: [], note: '' } }
+    let editingId = null;
+    let currentRoutine = 'morning';
+    let searchQuery = '';
+    let storageAvailable = true;
+    let calYear = new Date().getFullYear();
+    let calMonth = new Date().getMonth(); // 0-11
+    let selectedJournalDate = null;
+
+    function canUseStorage() {
+      try {
+        const k = '__skincare_scoop_test__';
+        localStorage.setItem(k, '1');
+        localStorage.removeItem(k);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    // Curated GM Collin products (Open Beauty Facts has limited coverage for this brand)
+    const GM_COLLIN_CATALOG = [
+      // Cleansers
+      { name: 'Hydramucine Cleansing Milk', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Caprylic/Capric Triglyceride, Glycerin, Cetearyl Alcohol, Ceteareth-20, Sodium Hyaluronate, Panthenol, Allantoin, Phenoxyethanol, and supporting emollients', ingredients: ['Hyaluronic Acid'] },
+      { name: 'Sensiderm Cleansing Milk', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Caprylic/Capric Triglyceride, Glycerin, Cetearyl Alcohol, soothing complex with Allantoin and Panthenol, mild surfactants', ingredients: [] },
+      { name: 'Phytoderm Cleansing Oil', brand: 'G.M. Collin', ingredientsText: 'Plant oils including Caprylic/Capric Triglyceride, Squalane, Argania Spinosa Kernel Oil, and mild cleansing esters', ingredients: [] },
+      { name: 'Puractive+ Cleansing Gel', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, mild surfactants, Salicylic Acid, Aloe Barbadensis Leaf Juice, Panthenol, plant extracts for purifying care', ingredients: ['BHA'] },
+      { name: 'Puractive+ Cleansing Foam', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, mild foaming agents, Salicylic Acid, Aloe, purifying botanical extracts', ingredients: ['BHA'] },
+      // Exfoliants
+      { name: 'Active Exfoliant Powder', brand: 'G.M. Collin', ingredientsText: 'Kaolin, Salicylic Acid, Papain, Bromelain, supporting powders and mild abrasives', ingredients: ['BHA'] },
+      { name: 'Exfozyme Exfoliant', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, enzymatic complex, Glycolic Acid, Lactic Acid, Glycerin, soothing agents', ingredients: ['AHA'] },
+      { name: 'Intensive Exfoliant Gel', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Galactoarabinan, Lactobacillus/Punica Granatum Fruit Ferment Extract, mild AHA complex, Glycerin', ingredients: ['AHA'] },
+      { name: 'Peel Toner Exfoliant', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, multi-acid complex (AHA/BHA), Glycerin, soothing botanicals, pH-balanced toner base', ingredients: ['AHA', 'BHA'] },
+      { name: 'Poly-Acid Peel Serum', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, blend of AHAs and supporting acids, Glycerin, soothing agents, peptide support', ingredients: ['AHA'] },
+      { name: 'Phytoaromatic Gommage', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, plant-based polishing agents, essential oil complex, Glycerin, mild surfactants', ingredients: [] },
+      { name: 'Sweet Gommage', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, sugar-based polishing agents, emollients, Glycerin, mild botanical extracts', ingredients: [] },
+      // Mists
+      { name: 'Hydramucine Hydrating Mist', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Aloe Barbadensis Leaf Extract, Tilia Cordata Flower Water, Sodium Hyaluronate, Glycerin, soothing complex', ingredients: ['Hyaluronic Acid'] },
+      { name: 'Sensiderm Soothing Mist', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Aloe Barbadensis Leaf Juice, Allantoin, calming plant waters, Glycerin', ingredients: [] },
+      { name: 'Puractive+ Purifying Mist', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, purifying botanical complex, mild astringents, Glycerin, alcohol-free base', ingredients: [] },
+      // Serums – actives
+      { name: 'Vital C15 Serum', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Ascorbyl Glucoside, Vitamin C derivatives, Glycerin, Tocopherol, antioxidant complex, stabilizing agents', ingredients: ['Vitamin C'] },
+      { name: 'Hyaluronic Filler Serum', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, C15-19 Alkane, Glycerin, Ethylhexyl Palmitate, Caprylic/Capric Triglyceride, Sodium Hyaluronate, Hydrolyzed Hyaluronic Acid, Citrullus Lanatus (Watermelon) Fruit Extract, Lens Esculenta (Lentil) Fruit Extract, Pyrus Malus (Apple) Fruit Extract, Palmitoyl Tripeptide-1, Palmitoyl Tetrapeptide-7, Methylglucoside Phosphate, Copper Lysinate/Prolinate, Glucomannan, and supporting hydrators', ingredients: ['Hyaluronic Acid', 'Peptides'] },
+      { name: 'Ceramide Comfort Serum', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Ceramide NP, Ceramide AP, Ceramide EOP, Cholesterol, Glycerin, Sodium Hyaluronate, barrier-repair lipids, soothing agents', ingredients: ['Ceramide', 'Hyaluronic Acid'] },
+      { name: 'Bota-Peptides Serum', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Acetyl Hexapeptide-8 (Argireline), Palmitoyl Tripeptide-1, Palmitoyl Tetrapeptide-7 (Matrixyl 3000), Glycerin, supporting peptide complex and hydrators', ingredients: ['Peptides'] },
+      { name: 'Collagen Supreme Serum', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, soluble collagen, peptides, Sodium Hyaluronate, Glycerin, firming complex', ingredients: ['Peptides', 'Hyaluronic Acid'] },
+      { name: 'Phyto Stem Cell Serum', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, plant stem cell extracts, Niacinamide, Sodium Hyaluronate, Glycerin, Propanediol, peptide support', ingredients: ['Niacinamide', 'Hyaluronic Acid', 'Peptides'] },
+      { name: '4D Visible Lifting Serum', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, lifting peptide complex, Sodium Hyaluronate, Glycerin, firming botanicals', ingredients: ['Peptides', 'Hyaluronic Acid'] },
+      { name: 'City D-Tox Serum', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Niacinamide, antioxidant complex, Glycerin, pollution-defense extracts', ingredients: ['Niacinamide'] },
+      { name: 'Dark Spot Serum', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Niacinamide, Ascorbyl Glucoside (Vitamin C derivative), brightening complex, Glycerin', ingredients: ['Niacinamide', 'Vitamin C'] },
+      { name: 'Mature Perfection Serum', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Niacinamide, peptide complex (Palmitoyl Tripeptide-1, Palmitoyl Tetrapeptide-7 and others), Sodium Hyaluronate, Ceramide NG, Glycerin, Yeast Extract, firming actives', ingredients: ['Niacinamide', 'Peptides', 'Hyaluronic Acid', 'Ceramide'] },
+      { name: 'GF Repair Serum', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, growth-factor inspired complex, peptides, Sodium Hyaluronate, barrier lipids, Glycerin', ingredients: ['Peptides', 'Hyaluronic Acid'] },
+      { name: 'Diamond Serum', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Niacinamide, multi-peptide complex, Ceramide NP/NS/AP/EOP/EOS, Sodium Hyaluronate, Diamond Powder, Madecassoside, Glycerin, advanced anti-aging complex', ingredients: ['Niacinamide', 'Peptides', 'Ceramide', 'Hyaluronic Acid'] },
+      { name: 'Vaskotonic Advanced Serum', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, vascular-support botanicals, peptides, Glycerin, soothing complex for redness-prone skin', ingredients: ['Peptides'] },
+      { name: 'Hydramucine Optimal Serum', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Sodium Hyaluronate, multi-molecular HA, Glycerin, watermelon/lentil/apple complex, Panthenol', ingredients: ['Hyaluronic Acid'] },
+      { name: 'Sublime Concentrate', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, concentrated active complex, Glycerin, peptides and hydrating agents', ingredients: ['Peptides'] },
+      // Eye care
+      { name: 'Bota-Peptides Eye Contour', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Acetyl Hexapeptide-8 (Argireline), Acmella Oleracea Extract, Matrixyl 3000 (Palmitoyl Tripeptide-1, Palmitoyl Tetrapeptide-7), Haloxyl complex, Caffeine, Glycerin, Sodium Hyaluronate', ingredients: ['Peptides', 'Hyaluronic Acid'] },
+      { name: 'Hyaluronic Filler Eye Contour', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, multi-weight Hyaluronic Acid, peptides, Glycerin, caffeine and de-puffing complex', ingredients: ['Hyaluronic Acid', 'Peptides'] },
+      { name: 'City D-Tox Eye Contour', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, antioxidant complex, peptides, Glycerin, caffeine, de-puffing agents', ingredients: ['Peptides'] },
+      { name: 'Diamond Eye Contour', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, multi-peptide complex, Ceramides, Sodium Hyaluronate, Diamond Powder, Glycerin', ingredients: ['Peptides', 'Ceramide', 'Hyaluronic Acid'] },
+      { name: 'Phyto Stem Cell Eye Contour', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, plant stem cell extracts, peptides, Sodium Hyaluronate, Glycerin', ingredients: ['Peptides', 'Hyaluronic Acid'] },
+      // Creams & moisturizers
+      { name: 'Sensiderm Cream', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Ceramide NP, Madecassoside, Palmitoyl Glycine, Rhamnosoft (Biosaccharide Gum-2), Alisma Plantago-Aquatica Extract, Skinmimics ceramide complex, Glycerin, Cholesterol, barrier lipids', ingredients: ['Ceramide'] },
+      { name: 'Marine Collagen Revitalizing Cream', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Glycerin, C15-19 Alkane, Caprylic/Capric Triglyceride, Hydrolyzed Collagen, Sodium Hyaluronate, Acetyl Hexapeptide-8, Palmitoyl Tripeptide-1, Palmitoyl Tetrapeptide-7, Thermus Thermophillus Ferment, Corallina Officinalis Extract, Undaria Pinnatifida Extract, Shea Butter, Squalane', ingredients: ['Peptides', 'Hyaluronic Acid'] },
+      { name: 'Hydramucine Cream', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Sodium Hyaluronate, Panthenol, Glycerin, ceramide support, emollients for barrier care', ingredients: ['Hyaluronic Acid', 'Ceramide'] },
+      { name: 'Hydramucine Optimal Cream', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Sodium Hyaluronate, multi-weight HA, Glycerin, watermelon/lentil/apple complex, rich emollients', ingredients: ['Hyaluronic Acid'] },
+      { name: 'Hydramucine Optimal Gel', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Glycerin, C15-19 Alkane, Isononyl Isononanoate, Dimethicone, Sodium Hyaluronate, Citrullus Lanatus (Watermelon) Fruit Extract, Lens Esculenta (Lentil) Fruit Extract, Pyrus Malus (Apple) Fruit Extract, Panthenol, Biosaccharide Gum-1, Squalane', ingredients: ['Hyaluronic Acid'] },
+      { name: 'Rosa Sea Gel', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Panthenol, Allantoin, Glycerin, sea water / marine extracts, light gel base', ingredients: [] },
+      { name: 'Nutritive Cream', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Glycerin, Octyldodecanol, Isononyl Isononanoate, Butyrospermum Parkii (Shea) Butter, Cetyl Alcohol, Glyceryl Stearate, Argania Spinosa Kernel Oil, Squalane, Moringa Oil/Hydrogenated Moringa Oil Esters, Sodium Hyaluronate, Ceramide NP, Ceramide NS, Ceramide AP, Ceramide EOP, Ceramide EOS, Caprooyl Phytosphingosine, Caprooyl Sphingosine, Panthenol, Allantoin, Acer Rubrum Bark Extract, and supporting emollients', ingredients: ['Hyaluronic Acid', 'Ceramide'] },
+      { name: 'Nutriderm Cream', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, rich lipid complex, Glycerin, ceramides, emollients for dry skin, soothing agents', ingredients: ['Ceramide'] },
+      { name: 'Bota-Peptides Cream', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Acetyl Hexapeptide-8, Matrixyl peptide complex, Glycerin, Caprylic/Capric Triglyceride, ceramide support, emollients', ingredients: ['Peptides', 'Ceramide'] },
+      { name: 'Phyto Stem Cell Cream', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, plant stem cell extracts, Niacinamide, Sodium Hyaluronate, Glycerin, rich cream base', ingredients: ['Niacinamide', 'Hyaluronic Acid'] },
+      { name: '4D Visible Lifting Cream', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, lifting peptide complex, Sodium Hyaluronate, Glycerin, firming cream base', ingredients: ['Peptides', 'Hyaluronic Acid'] },
+      { name: 'Hyaluronic Filler Cream', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, multi-weight Hyaluronic Acid, peptides, Glycerin, rich moisturizing base', ingredients: ['Hyaluronic Acid', 'Peptides'] },
+      { name: 'Mature Perfection Day Cream', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Caprylic/Capric Triglyceride, Glycerin, Niacinamide, peptide complex, Sodium Hyaluronate, Ceramide NG, Shea Butter, Squalane, Yeast Extract, firming actives', ingredients: ['Niacinamide', 'Peptides', 'Hyaluronic Acid', 'Ceramide'] },
+      { name: 'Mature Perfection Night Cream', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Caprylic/Capric Triglyceride, Glycerin, Niacinamide, Dimethicone, peptide complex (Palmitoyl Tripeptide-1, Palmitoyl Tetrapeptide-7 and others), Sodium Hyaluronate, Ceramide NG, Shea Butter, Squalane, Yeast Extract, Castanea Sativa (Chestnut) Seed Extract', ingredients: ['Niacinamide', 'Peptides', 'Hyaluronic Acid', 'Ceramide'] },
+      { name: 'Native Collagen Gel', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Glycerin, Dimethicone, Pentylene Glycol, Butylene Glycol, Propylene Glycol, Oligopeptide-5, Biosaccharide Gum-1, Sodium Hyaluronate, Sodium PCA, Soluble Collagen, Methylglucoside Phosphate, Copper Lysinate/Prolinate, Citrullus Lanatus (Watermelon) Fruit Extract, Lens Esculenta (Lentil) Fruit Extract, Pyrus Malus (Apple) Fruit Extract', ingredients: ['Hyaluronic Acid', 'Peptides'] },
+      { name: 'Diamond Cream', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Glycerin, Niacinamide, multi-peptide complex, Ceramide NP/NS/AP/EOP/EOS, Sodium Hyaluronate, Diamond Powder, Madecassoside, Shea Butter, Squalane, advanced anti-aging complex', ingredients: ['Niacinamide', 'Peptides', 'Ceramide', 'Hyaluronic Acid'] },
+      { name: 'GF Repair Cream', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, growth-factor inspired complex, peptides, Sodium Hyaluronate, barrier lipids, rich cream base', ingredients: ['Peptides', 'Hyaluronic Acid'] },
+      { name: 'Retinol Advanced+ Night Cream', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Retinol, Retinyl Palmitate, peptides, Ceramides, Glycerin, soothing and buffering agents in a night cream base', ingredients: ['Retinol / Retinoid', 'Peptides', 'Ceramide'] },
+      { name: 'Puractive+ Cream', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, purifying actives, mild BHA support, Glycerin, light cream base for combination/oily skin', ingredients: ['BHA'] },
+      { name: 'Puracne Gel', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Salicylic Acid, purifying botanicals, Glycerin, light gel base for blemish-prone skin', ingredients: ['BHA'] },
+      // Masks
+      { name: 'Pure Mask', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Bentonite, Kaolin, Niacinamide, Propanediol, Glycerin, Salicylic Acid, Zinc Acetylmethionate, purifying clays and botanicals', ingredients: ['Niacinamide', 'BHA'] },
+      { name: 'Aqua Mask', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, hydrating complex, Sodium Hyaluronate, Glycerin, gel-mask base', ingredients: ['Hyaluronic Acid'] },
+      { name: 'Glow Mask', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, brightening complex, Glycerin, illuminating botanicals, mask base', ingredients: [] },
+      { name: 'Phyto Stem Cell Mask', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, plant stem cell extracts, hydrating agents, Glycerin, mask base', ingredients: [] },
+      { name: 'Biocellulose Facial Mask', brand: 'G.M. Collin', ingredientsText: 'Biocellulose sheet infused with hydrating serum (Sodium Hyaluronate, Glycerin, soothing complex)', ingredients: ['Hyaluronic Acid'] },
+      // Oils & specials
+      { name: 'Essential Infusion Dry Oil', brand: 'G.M. Collin', ingredientsText: 'C15-19 Alkane, Caprylic/Capric Triglyceride, Squalane, Argania Spinosa Kernel Oil, Mauritia Flexuosa Fruit Oil, Ceramide NP, and supporting plant oils', ingredients: ['Ceramide'] },
+      { name: 'Puractive+ Essential Oil Complex', brand: 'G.M. Collin', ingredientsText: 'Aqua/Water/Eau, Alcohol Denat., PEG-40 Castor Oil, C12-15 Alkyl Benzoate, Aloe Barbadensis Leaf Juice, Pelargonium Graveolens Flower Oil, Lavandula Oil/Extract, Salicylic Acid, Cinnamomum Camphora (Camphor) Bark Oil, Cupressus Sempervirens Oil, Rosmarinus Officinalis (Rosemary) Leaf Oil, Panthenol, Escin, Ruscus Aculeatus Root Extract, Centella Asiatica Leaf Extract, Calendula Officinalis Flower Extract', ingredients: ['BHA'] },
+      { name: 'Lip Plumping Oil', brand: 'G.M. Collin', ingredientsText: 'Hydrogenated Poly(C6-14 Olefin), Phenyl Trimethicone, Ethylhexyl Palmitate, Shea Butter, Ceramide NP, Sodium Hyaluronate, Palmitoyl Tripeptide-1, Centella Asiatica Extract, Atelocollagen, plumping complex', ingredients: ['Ceramide', 'Hyaluronic Acid', 'Peptides'] },
+      { name: 'Repair Lip Balm', brand: 'G.M. Collin', ingredientsText: 'Emollient base with Shea Butter, ceramides, healing oils, and protective waxes', ingredients: ['Ceramide'] },
+      // Sun protection
+      { name: 'SPF 50 Tinted Sunscreen', brand: 'G.M. Collin', ingredientsText: 'Active: Titanium Dioxide, Zinc Oxide. Inactive: Dimethicone, PEG-10 Dimethicone, Hexyl Laurate, Iron Oxides, plant oils, Tocopheryl Acetate, and film-forming agents', ingredients: ['SPF'] },
+      { name: 'SPF 25 Urban Protection Veil', brand: 'G.M. Collin', ingredientsText: 'Active: Zinc Oxide 13.3%, Titanium Dioxide 3.8%. Inactive: Aqua/Water/Eau, Argania Spinosa Kernel Oil, Bisabolol, Tocopherol, and supporting sunscreen base', ingredients: ['SPF'] }
+    ];
+
+    function load() {
+      storageAvailable = canUseStorage();
+      if (!storageAvailable) {
+        console.warn('localStorage not available — using session-only memory');
+        return;
+      }
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          data = JSON.parse(raw);
+          ['morning', 'evening', 'shelf'].forEach(k => { if (!Array.isArray(data[k])) data[k] = []; });
+          // Migrate old weekly list into shelf + keep products unique by id
+          if (Array.isArray(data.weekly) && data.weekly.length) {
+            data.weekly.forEach(p => {
+              if (!data.shelf.some(s => s.id === p.id)) data.shelf.push(p);
+            });
+            delete data.weekly;
+          }
+          // Ensure every routine product also exists on the shelf
+          ['morning', 'evening'].forEach(r => {
+            data[r].forEach(p => {
+              if (!data.shelf.some(s => s.id === p.id)) data.shelf.push({ ...p });
+            });
+          });
+          // AM + PM products should appear in both morning and evening
+          data.shelf.forEach(p => {
+            const freq = (p.frequency || '').toLowerCase();
+            if (freq.includes('am') && freq.includes('pm')) {
+              if (!data.morning.some(x => x.id === p.id)) data.morning.push({ ...p });
+              if (!data.evening.some(x => x.id === p.id)) data.evening.push({ ...p });
+            }
+          });
+        }
+      } catch (e) {
+        console.warn('Load failed', e);
+      }
+    }
+
+    function save() {
+      // Always keep data in memory so the UI stays correct this session
+      if (!storageAvailable) {
+        // Soft warning only once per session via toast after first successful add
+        return true;
+      }
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        return true;
+      } catch (e) {
+        console.error('Save failed', e);
+        storageAvailable = false;
+        showToast('Saved for this session only (browser blocked storage)');
+        return true; // still allow the product to appear in the UI
+      }
+    }
+
+    function loadJournal() {
+      try {
+        if (!canUseStorage()) return;
+        const raw = localStorage.getItem(JOURNAL_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') journal = parsed;
+        }
+      } catch (e) { console.warn(e); }
+    }
+
+    function saveJournal() {
+      try {
+        if (canUseStorage()) localStorage.setItem(JOURNAL_KEY, JSON.stringify(journal));
+      } catch (e) { console.warn(e); }
+    }
+
+    function dateKey(y, m, d) {
+      return y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+    }
+
+    function formatDisplayDate(key) {
+      const [y, m, d] = key.split('-').map(Number);
+      const dt = new Date(y, m - 1, d);
+      return dt.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function renderCalendar() {
+      const label = document.getElementById('cal-month-label');
+      const grid = document.getElementById('cal-grid');
+      if (!label || !grid) return;
+
+      const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      label.textContent = monthNames[calMonth] + ' ' + calYear;
+
+      const first = new Date(calYear, calMonth, 1);
+      const startPad = first.getDay(); // 0=Sun
+      const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+      const daysInPrev = new Date(calYear, calMonth, 0).getDate();
+
+      const today = new Date();
+      const todayKey = dateKey(today.getFullYear(), today.getMonth(), today.getDate());
+
+      let html = '';
+      // Previous month padding
+      for (let i = startPad - 1; i >= 0; i--) {
+        const d = daysInPrev - i;
+        const py = calMonth === 0 ? calYear - 1 : calYear;
+        const pm = calMonth === 0 ? 11 : calMonth - 1;
+        const key = dateKey(py, pm, d);
+        html += calDayCell(d, key, true, key === todayKey);
+      }
+      // Current month
+      for (let d = 1; d <= daysInMonth; d++) {
+        const key = dateKey(calYear, calMonth, d);
+        html += calDayCell(d, key, false, key === todayKey);
+      }
+      // Next month padding to fill 6 rows max
+      const totalCells = startPad + daysInMonth;
+      const remainder = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+      for (let d = 1; d <= remainder; d++) {
+        const ny = calMonth === 11 ? calYear + 1 : calYear;
+        const nm = calMonth === 11 ? 0 : calMonth + 1;
+        const key = dateKey(ny, nm, d);
+        html += calDayCell(d, key, true, key === todayKey);
+      }
+      grid.innerHTML = html;
+    }
+
+    function calDayCell(dayNum, key, other, isToday) {
+      const entry = journal[key];
+      const hasC = entry && entry.concerns && entry.concerns.length;
+      const hasF = entry && entry.factors && entry.factors.length;
+      const hasNote = entry && entry.note;
+      const hasEntry = hasC || hasF || hasNote;
+      let cls = 'cal-day';
+      if (other) cls += ' other-month';
+      if (isToday) cls += ' today';
+      if (hasEntry) cls += ' has-entry';
+      let dots = '<div class="cal-dots">';
+      if (hasC) dots += '<span class="cal-dot concern"></span>';
+      if (hasF) dots += '<span class="cal-dot factor"></span>';
+      dots += '</div>';
+      return `<button type="button" class="${cls}" data-date="${key}" aria-label="${key}">${dayNum}${dots}</button>`;
+    }
+
+    function openJournalDay(key) {
+      selectedJournalDate = key;
+      document.getElementById('journal-day-title').textContent = formatDisplayDate(key);
+      const entry = journal[key] || { concerns: [], factors: [], note: '' };
+      document.querySelectorAll('#concern-chips .chip').forEach(c => {
+        c.classList.toggle('selected', (entry.concerns || []).includes(c.dataset.value));
+      });
+      document.querySelectorAll('#factor-chips .chip').forEach(c => {
+        c.classList.toggle('selected', (entry.factors || []).includes(c.dataset.value));
+      });
+      document.getElementById('journal-note').value = entry.note || '';
+      document.getElementById('journal-modal-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeJournalModal() {
+      document.getElementById('journal-modal-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+      selectedJournalDate = null;
+    }
+
+    function saveJournalDay() {
+      if (!selectedJournalDate) return;
+      const concerns = Array.from(document.querySelectorAll('#concern-chips .chip.selected')).map(c => c.dataset.value);
+      const factors = Array.from(document.querySelectorAll('#factor-chips .chip.selected')).map(c => c.dataset.value);
+      const note = document.getElementById('journal-note').value.trim();
+      if (!concerns.length && !factors.length && !note) {
+        delete journal[selectedJournalDate];
+      } else {
+        journal[selectedJournalDate] = { concerns, factors, note };
+      }
+      saveJournal();
+      renderCalendar();
+      closeJournalModal();
+      showToast('Journal saved');
+    }
+
+    function clearJournalDay() {
+      if (!selectedJournalDate) return;
+      delete journal[selectedJournalDate];
+      saveJournal();
+      renderCalendar();
+      closeJournalModal();
+      showToast('Day cleared');
+    }
+
+    function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2300);
+    }
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    function matchesSearch(product, q) {
+      if (!q) return true;
+      const hay = [product.name, product.brand, product.instructions, product.ingredientsText, ...(product.ingredients || [])].join(' ').toLowerCase();
+      return hay.includes(q);
+    }
+
+    function getConflictsForRoutine(routine) {
+      const products = data[routine];
+      const ingredientMap = {};
+      products.forEach(p => {
+        (p.ingredients || []).forEach(ing => {
+          if (!ingredientMap[ing]) ingredientMap[ing] = [];
+          ingredientMap[ing].push(p.name);
+        });
+      });
+      const found = [];
+      CONFLICTS.forEach(c => {
+        const [a, b] = c.pair;
+        if (ingredientMap[a] && ingredientMap[b]) found.push({ ...c, productsA: ingredientMap[a], productsB: ingredientMap[b] });
+      });
+      return found;
+    }
+
+    function updateCompatBanners() {
+      ['morning', 'evening'].forEach(routine => {
+        const banner = document.getElementById(`compat-${routine}`);
+        if (!banner) return;
+        const conflicts = getConflictsForRoutine(routine);
+        if (conflicts.length === 0) {
+          const hasIngredients = data[routine].some(p => (p.ingredients || []).length > 0);
+          if (hasIngredients) {
+            banner.className = 'compat-banner visible compat-ok';
+            banner.innerHTML = '<strong>✓ No major conflicts detected</strong> among tagged ingredients in this ritual.';
+          } else {
+            banner.className = 'compat-banner';
+            banner.innerHTML = '';
+          }
+        } else {
+          banner.className = 'compat-banner visible';
+          const items = conflicts.map(c => {
+            const label = c.level === 'caution' ? '⚠️' : 'ℹ️';
+            return `<li>${label} <strong>${c.pair[0]}</strong> + <strong>${c.pair[1]}</strong></li>`;
+          }).join('');
+          banner.innerHTML = `<strong>Compatibility notes</strong><ul>${items}</ul><div style="margin-top:6px;font-size:0.8rem">Tap the ⚖️ button for details</div>`;
+        }
+      });
+    }
+
+    function showCompatModal() {
+      const nameMap = { morning: 'Morning', evening: 'Evening' };
+      const compatRoutine = (currentRoutine === 'morning' || currentRoutine === 'evening') ? currentRoutine : 'morning';
+      const conflicts = getConflictsForRoutine(compatRoutine);
+      document.getElementById('compat-routine-name').textContent = nameMap[compatRoutine];
+      const container = document.getElementById('compat-results');
+      if (conflicts.length === 0) {
+        const hasAny = data[compatRoutine].some(p => (p.ingredients || []).length > 0);
+        container.innerHTML = hasAny
+          ? `<div class="compat-pair ok"><h4>✓ Looking good</h4><p>No known major conflicts among the ingredients you’ve tagged in this ritual.</p></div>`
+          : `<div class="compat-pair ok"><h4>No ingredients tagged yet</h4><p>Add key actives or paste a full ingredient list when creating products to unlock checks.</p></div>`;
+      } else {
+        container.innerHTML = conflicts.map(c => `
+          <div class="compat-pair">
+            <h4>${c.level === 'caution' ? '⚠️' : 'ℹ️'} ${escapeHtml(c.pair[0])} + ${escapeHtml(c.pair[1])}</h4>
+            <p>${escapeHtml(c.note)}</p>
+            <p style="margin-top:6px;font-size:0.8rem;opacity:0.85">Found in: ${escapeHtml([...new Set([...c.productsA, ...c.productsB])].join(', '))}</p>
+          </div>
+        `).join('');
+      }
+      document.getElementById('compat-modal-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function autoTagFromText(text) {
+      if (!text) return [];
+      const lower = text.toLowerCase();
+      const found = new Set();
+      Object.entries(KEY_INGREDIENT_MAP).forEach(([key, label]) => { if (lower.includes(key)) found.add(label); });
+      return Array.from(found);
+    }
+
+    function fillFromCatalogItem(name, brand, ingredientsText, preTags) {
+      document.getElementById('product-name').value = name || '';
+      document.getElementById('product-brand').value = brand || '';
+      document.getElementById('product-ingredients-text').value = ingredientsText || '';
+      const tags = preTags && preTags.length ? preTags : autoTagFromText(ingredientsText || '');
+      document.querySelectorAll('#ingredient-chips .chip').forEach(chip => {
+        chip.classList.toggle('selected', tags.includes(chip.dataset.value));
+      });
+      document.getElementById('catalog-results').className = 'catalog-results';
+      document.getElementById('catalog-status').className = 'catalog-status';
+      showToast('Product details filled — review & save');
+    }
+
+    async function searchCatalog(query) {
+      const status = document.getElementById('catalog-status');
+      const resultsEl = document.getElementById('catalog-results');
+      status.className = 'catalog-status visible';
+      status.textContent = 'Searching…';
+      resultsEl.className = 'catalog-results';
+      resultsEl.innerHTML = '';
+
+      const q = query.toLowerCase().trim();
+      const isBrandSearch = /gm\s*\.?\s*collin|g\.?\s*m\.?\s*collin|collin/i.test(q);
+      const localHits = GM_COLLIN_CATALOG.filter(p => {
+        const name = p.name.toLowerCase();
+        const brand = p.brand.toLowerCase();
+        if (name.includes(q) || brand.includes(q)) return true;
+        if (isBrandSearch) return true;
+        // Match individual words for product names
+        return q.split(/\s+/).filter(w => w.length > 2).some(w => name.includes(w));
+      });
+
+      let remoteProducts = [];
+      try {
+        const url = `https://world.openbeautyfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&json=1&page_size=8&fields=code,product_name,brands,ingredients_text`;
+        const res = await fetch(url, { headers: { 'User-Agent': 'SkincareScoop/1.0 (skincare routine app)' } });
+        const json = await res.json();
+        remoteProducts = (json.products || []).filter(p => p.product_name);
+      } catch (err) {
+        console.warn('Remote catalog search failed', err);
+      }
+
+      const items = [];
+      localHits.forEach(p => {
+        items.push({
+          name: p.name,
+          brand: p.brand,
+          ingredientsText: p.ingredientsText || '',
+          preTags: p.ingredients || [],
+          source: 'G.M. Collin'
+        });
+      });
+      remoteProducts.forEach(p => {
+        // Avoid duplicating if same name already from local
+        if (items.some(i => i.name.toLowerCase() === (p.product_name || '').toLowerCase())) return;
+        items.push({
+          name: p.product_name || 'Unknown',
+          brand: p.brands || '',
+          ingredientsText: p.ingredients_text || '',
+          preTags: null,
+          source: null
+        });
+      });
+
+      if (items.length === 0) {
+        status.textContent = 'No products found. Try “GM Collin”, a product name, or enter details manually.';
+        return;
+      }
+
+      status.textContent = `Found ${items.length} product${items.length > 1 ? 's' : ''} — tap to fill form`;
+      resultsEl.className = 'catalog-results visible';
+      resultsEl.innerHTML = items.map((p, idx) => {
+        const ingPreview = (p.ingredientsText || '').slice(0, 80);
+        return `
+          <div class="catalog-item" data-idx="${idx}">
+            <div class="catalog-item-name">${escapeHtml(p.name)}</div>
+            <div class="catalog-item-brand">${escapeHtml(p.brand)}${p.source ? ' · curated' : ''}</div>
+            ${ingPreview ? `<div class="catalog-item-ing">${escapeHtml(ingPreview)}${(p.ingredientsText || '').length > 80 ? '…' : ''}</div>` : ''}
+          </div>
+        `;
+      }).join('');
+
+      resultsEl.querySelectorAll('.catalog-item').forEach(el => {
+        el.addEventListener('click', () => {
+          const p = items[parseInt(el.dataset.idx, 10)];
+          if (p) fillFromCatalogItem(p.name, p.brand, p.ingredientsText, p.preTags);
+        });
+      });
+    }
+
+    function isInRoutine(routine, id) {
+      return (data[routine] || []).some(p => p.id === id);
+    }
+
+    function productCardHtml(p, idx, routine) {
+      const ingredientsHtml = (p.ingredients || []).map(ing => `<span class="badge badge-ingredient">${escapeHtml(ing)}</span>`).join('');
+      const hasFullList = !!(p.ingredientsText && p.ingredientsText.trim());
+      return `
+        <div class="product-card" data-id="${p.id}">
+          <div class="product-top">
+            <div class="product-order">${idx + 1}</div>
+            <div class="product-info">
+              <div class="product-name">${escapeHtml(p.name)}</div>
+              ${p.brand ? `<div class="product-brand">${escapeHtml(p.brand)}</div>` : ''}
+              <div class="product-meta">
+                <span class="badge badge-freq">⏱ ${escapeHtml(p.frequency || '—')}</span>
+                ${ingredientsHtml}
+              </div>
+              ${p.instructions ? `<div class="product-instructions">${escapeHtml(p.instructions)}</div>` : ''}
+              ${hasFullList ? `
+                <button class="ingredients-toggle" onclick="toggleIngredients(this)">▸ View full ingredients</button>
+                <div class="ingredients-list">${escapeHtml(p.ingredientsText)}</div>
+              ` : ''}
+            </div>
+          </div>
+          <div class="product-actions">
+            <button class="btn-icon" onclick="moveProduct('${routine}', '${p.id}', -1)" title="Move earlier">↑</button>
+            <button class="btn-icon" onclick="moveProduct('${routine}', '${p.id}', 1)" title="Move later">↓</button>
+            <button class="btn-icon" onclick="editProduct('${routine}', '${p.id}')" title="Edit">✏️</button>
+            <button class="btn-icon danger" onclick="deleteProduct('${routine}', '${p.id}')" title="Remove from ritual">🗑</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function shelfCardHtml(p, idx) {
+      const inAm = isInRoutine('morning', p.id);
+      const inPm = isInRoutine('evening', p.id);
+      const ingredientsHtml = (p.ingredients || []).map(ing => `<span class="badge badge-ingredient">${escapeHtml(ing)}</span>`).join('');
+      const hasFullList = !!(p.ingredientsText && p.ingredientsText.trim());
+      return `
+        <div class="product-card" data-id="${p.id}">
+          <div class="product-top">
+            <div class="product-order">${idx + 1}</div>
+            <div class="product-info">
+              <div class="product-name">${escapeHtml(p.name)}</div>
+              ${p.brand ? `<div class="product-brand">${escapeHtml(p.brand)}</div>` : ''}
+              <div class="product-meta">
+                <span class="badge badge-freq">⏱ ${escapeHtml(p.frequency || '—')}</span>
+                ${ingredientsHtml}
+              </div>
+              ${p.instructions ? `<div class="product-instructions">${escapeHtml(p.instructions)}</div>` : ''}
+              ${hasFullList ? `
+                <button class="ingredients-toggle" onclick="toggleIngredients(this)">▸ View full ingredients</button>
+                <div class="ingredients-list">${escapeHtml(p.ingredientsText)}</div>
+              ` : ''}
+              <div class="shelf-assign">
+                <label class="shelf-check ${inAm ? 'on' : ''}">
+                  <input type="checkbox" ${inAm ? 'checked' : ''} onchange="toggleShelfAssign('${p.id}', 'morning', this.checked)" />
+                  ☀️ Morning
+                </label>
+                <label class="shelf-check ${inPm ? 'on' : ''}">
+                  <input type="checkbox" ${inPm ? 'checked' : ''} onchange="toggleShelfAssign('${p.id}', 'evening', this.checked)" />
+                  🌙 Evening
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="product-actions">
+            <button class="btn-icon" onclick="editProduct('shelf', '${p.id}')" title="Edit">✏️</button>
+            <button class="btn-icon danger" onclick="deleteFromShelf('${p.id}')" title="Remove from shelf">🗑</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function render() {
+      const q = searchQuery.toLowerCase().trim();
+      ['morning', 'evening'].forEach(routine => {
+        const list = document.getElementById(`list-${routine}`);
+        const empty = document.getElementById(`empty-${routine}`);
+        const noResults = document.getElementById(`no-results-${routine}`);
+        const count = document.getElementById(`count-${routine}`);
+        const products = data[routine] || [];
+        const visible = products.filter(p => matchesSearch(p, q));
+        count.textContent = `${products.length} product${products.length !== 1 ? 's' : ''}`;
+        if (products.length === 0) {
+          list.innerHTML = '';
+          empty.style.display = 'block';
+          noResults.style.display = 'none';
+        } else {
+          empty.style.display = 'none';
+          if (visible.length === 0 && q) {
+            list.innerHTML = '';
+            noResults.style.display = 'block';
+          } else {
+            noResults.style.display = 'none';
+            list.innerHTML = products.map((p, idx) => {
+              if (!matchesSearch(p, q)) {
+                return `<div class="product-card hidden-by-search" data-id="${p.id}"></div>`;
+              }
+              return productCardHtml(p, idx, routine);
+            }).join('');
+          }
+        }
+      });
+
+      // Shelf / All Products
+      const shelfList = document.getElementById('list-shelf');
+      const shelfEmpty = document.getElementById('empty-shelf');
+      const shelfNo = document.getElementById('no-results-shelf');
+      const shelfCount = document.getElementById('count-shelf');
+      const shelfProducts = data.shelf || [];
+      shelfCount.textContent = `${shelfProducts.length} product${shelfProducts.length !== 1 ? 's' : ''}`;
+      if (shelfProducts.length === 0) {
+        shelfList.innerHTML = '';
+        shelfEmpty.style.display = 'block';
+        shelfNo.style.display = 'none';
+      } else {
+        shelfEmpty.style.display = 'none';
+        const visible = shelfProducts.filter(p => matchesSearch(p, q));
+        if (visible.length === 0 && q) {
+          shelfList.innerHTML = '';
+          shelfNo.style.display = 'block';
+        } else {
+          shelfNo.style.display = 'none';
+          shelfList.innerHTML = shelfProducts.map((p, idx) => {
+            if (!matchesSearch(p, q)) {
+              return `<div class="product-card hidden-by-search" data-id="${p.id}"></div>`;
+            }
+            return shelfCardHtml(p, idx);
+          }).join('');
+        }
+      }
+
+      updateCompatBanners();
+    }
+
+    function toggleShelfAssign(id, routine, checked) {
+      const product = data.shelf.find(p => p.id === id);
+      if (!product) return;
+      if (checked) {
+        if (!data[routine].some(p => p.id === id)) {
+          data[routine].push({ ...product });
+        }
+      } else {
+        data[routine] = data[routine].filter(p => p.id !== id);
+      }
+      save();
+      render();
+      showToast(checked
+        ? `Added to ${routine === 'morning' ? 'Morning' : 'Evening'}`
+        : `Removed from ${routine === 'morning' ? 'Morning' : 'Evening'}`);
+    }
+
+    function deleteFromShelf(id) {
+      if (!confirm('Remove this product from your shelf and all rituals?')) return;
+      data.shelf = data.shelf.filter(p => p.id !== id);
+      data.morning = data.morning.filter(p => p.id !== id);
+      data.evening = data.evening.filter(p => p.id !== id);
+      save();
+      render();
+      showToast('Removed from shelf');
+    }
+
+    window.toggleShelfAssign = toggleShelfAssign;
+    window.deleteFromShelf = deleteFromShelf;
+
+    function toggleIngredients(btn) {
+      const list = btn.nextElementSibling;
+      const open = list.classList.toggle('open');
+      btn.textContent = open ? '▾ Hide ingredients' : '▸ View full ingredients';
+    }
+
+    function getSelectedIngredients() {
+      return Array.from(document.querySelectorAll('#ingredient-chips .chip.selected')).map(el => el.dataset.value);
+    }
+
+    function switchToRoutine(routine) {
+      currentRoutine = routine;
+      document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.routine === routine));
+      document.querySelectorAll('.routine-section').forEach(s => s.classList.remove('active'));
+      const section = document.getElementById(`routine-${routine}`);
+      if (section) section.classList.add('active');
+      const fabMain = document.getElementById('fab');
+      const fabCompat = document.getElementById('fab-compat');
+      // + always available except journal; compat only on AM/PM
+      if (fabMain) fabMain.style.display = routine === 'journal' ? 'none' : '';
+      if (fabCompat) fabCompat.style.display = (routine === 'morning' || routine === 'evening') ? '' : 'none';
+      if (routine === 'journal') renderCalendar();
+    }
+
+    function addOrUpdateProduct() {
+      const name = document.getElementById('product-name').value.trim();
+      if (!name) {
+        showToast('Product name is required');
+        return;
+      }
+
+      const brand = document.getElementById('product-brand').value.trim();
+      const instructions = document.getElementById('product-instructions').value.trim();
+      const ingredientsText = document.getElementById('product-ingredients-text').value.trim();
+
+      const freqEl = document.querySelector('#freq-chips .chip.selected');
+      const frequency = (freqEl && freqEl.dataset.value) || 'AM';
+
+      const routineEl = document.querySelector('#routine-select .routine-opt.selected');
+      const routine = (routineEl && routineEl.dataset.value) || currentRoutine || 'morning';
+
+      let ingredients = getSelectedIngredients();
+      if (ingredients.length === 0 && ingredientsText) {
+        ingredients = autoTagFromText(ingredientsText);
+      }
+
+      const productData = { name, brand, instructions, frequency, ingredients, ingredientsText };
+
+      function isBothFreq(f) {
+        const s = (f || '').toLowerCase();
+        return s.includes('am') && s.includes('pm');
+      }
+      function isAmOnly(f) {
+        const s = (f || '').toLowerCase();
+        return s.includes('am') && !s.includes('pm');
+      }
+      function isPmOnly(f) {
+        const s = (f || '').toLowerCase();
+        return s.includes('pm') && !s.includes('am');
+      }
+
+      // Decide which rituals this product belongs in based on frequency
+      function targetRoutinesFor(freq, selectedRoutine) {
+        if (isBothFreq(freq)) return ['morning', 'evening'];
+        if (isAmOnly(freq)) return ['morning'];
+        if (isPmOnly(freq)) return ['evening'];
+        if (selectedRoutine === 'morning' || selectedRoutine === 'evening') return [selectedRoutine];
+        return []; // shelf only
+      }
+
+      function upsertOnShelf(id, payload) {
+        const idx = data.shelf.findIndex(p => p.id === id);
+        if (idx !== -1) data.shelf[idx] = { ...data.shelf[idx], ...payload, id };
+        else data.shelf.push({ id, ...payload });
+      }
+
+      function placeInRoutines(id, payload, targets) {
+        // Update existing copies or remove from routines not in targets
+        ['morning', 'evening'].forEach(r => {
+          const idx = data[r].findIndex(p => p.id === id);
+          if (targets.includes(r)) {
+            if (idx !== -1) data[r][idx] = { ...data[r][idx], ...payload, id };
+            else data[r].push({ id, ...payload });
+          } else if (idx !== -1) {
+            // Keep product if user only changed non-AM/PM freq and it was manually assigned?
+            // For AM-only / PM-only / AM+PM, frequency is authoritative.
+            if (isBothFreq(payload.frequency) || isAmOnly(payload.frequency) || isPmOnly(payload.frequency)) {
+              data[r] = data[r].filter(p => p.id !== id);
+            }
+          }
+        });
+      }
+
+      if (editingId) {
+        upsertOnShelf(editingId, productData);
+        const targets = targetRoutinesFor(frequency, routine);
+        placeInRoutines(editingId, productData, targets);
+        // If frequency is not AM/PM-specific and user picked a ritual, ensure it's there
+        if (!isBothFreq(frequency) && !isAmOnly(frequency) && !isPmOnly(frequency)) {
+          if ((routine === 'morning' || routine === 'evening') && !data[routine].some(p => p.id === editingId)) {
+            data[routine].push({ id: editingId, ...productData });
+          }
+        }
+        showToast(isBothFreq(frequency) ? 'Updated · in Morning & Evening' : 'Product updated');
+      } else {
+        const id = uid();
+        const item = { id, ...productData };
+        data.shelf.push(item);
+        const targets = targetRoutinesFor(frequency, routine);
+        targets.forEach(r => data[r].push({ ...item }));
+        if (isBothFreq(frequency)) showToast('Added to Morning & Evening');
+        else if (targets.length) showToast('Added to shelf + ' + (targets[0] === 'morning' ? 'Morning' : 'Evening'));
+        else showToast('Added to shelf');
+      }
+
+      save();
+      closeModal();
+      if (isBothFreq(frequency) || routine === 'morning') switchToRoutine('morning');
+      else if (routine === 'evening') switchToRoutine('evening');
+      else switchToRoutine('shelf');
+      render();
+    }
+
+    function editProduct(routine, id) {
+      const product = (data[routine] || []).find(p => p.id === id) || data.shelf.find(p => p.id === id);
+      if (!product) return;
+      editingId = id;
+      document.getElementById('modal-title').textContent = 'Edit Product';
+      document.getElementById('product-name').value = product.name;
+      document.getElementById('product-brand').value = product.brand || '';
+      document.getElementById('product-instructions').value = product.instructions || '';
+      document.getElementById('product-ingredients-text').value = product.ingredientsText || '';
+      // Prefer actual routine membership for the select
+      let selectRoutine = routine;
+      if (routine === 'shelf') {
+        if (isInRoutine('morning', id)) selectRoutine = 'morning';
+        else if (isInRoutine('evening', id)) selectRoutine = 'evening';
+        else selectRoutine = 'shelf';
+      }
+      document.querySelectorAll('#routine-select .routine-opt').forEach(el => el.classList.toggle('selected', el.dataset.value === selectRoutine));
+      document.querySelectorAll('#freq-chips .chip').forEach(el => el.classList.toggle('selected', el.dataset.value === product.frequency));
+      document.querySelectorAll('#ingredient-chips .chip').forEach(el => el.classList.toggle('selected', (product.ingredients || []).includes(el.dataset.value)));
+      document.getElementById('catalog-query').value = '';
+      document.getElementById('catalog-status').className = 'catalog-status';
+      document.getElementById('catalog-results').className = 'catalog-results';
+      document.getElementById('catalog-results').innerHTML = '';
+      openModal();
+    }
+
+    function deleteProduct(routine, id) {
+      if (!confirm('Remove this product from this ritual? It will stay on your All Products shelf.')) return;
+      data[routine] = data[routine].filter(p => p.id !== id);
+      save(); render(); showToast('Removed from ritual');
+    }
+
+    function moveProduct(routine, id, direction) {
+      const list = data[routine];
+      const idx = list.findIndex(p => p.id === id);
+      if (idx === -1) return;
+      const newIdx = idx + direction;
+      if (newIdx < 0 || newIdx >= list.length) return;
+      [list[idx], list[newIdx]] = [list[newIdx], list[idx]];
+      save(); render();
+    }
+
+    function openModal() {
+      document.getElementById('modal-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+      editingId = null;
+      document.getElementById('modal-title').textContent = 'Add Product';
+      document.getElementById('product-name').value = '';
+      document.getElementById('product-brand').value = '';
+      document.getElementById('product-instructions').value = '';
+      document.getElementById('product-ingredients-text').value = '';
+      document.getElementById('catalog-query').value = '';
+      document.getElementById('catalog-status').className = 'catalog-status';
+      document.getElementById('catalog-results').className = 'catalog-results';
+      document.getElementById('catalog-results').innerHTML = '';
+      document.querySelectorAll('#ingredient-chips .chip').forEach(el => el.classList.remove('selected'));
+    }
+    function closeCompatModal() {
+      document.getElementById('compat-modal-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('fab').addEventListener('click', () => {
+      document.querySelectorAll('#routine-select .routine-opt').forEach(el => el.classList.toggle('selected', el.dataset.value === currentRoutine));
+      const defaultFreq = currentRoutine === 'evening' ? 'PM' : currentRoutine === 'morning' ? 'AM' : 'AM + PM';
+      document.querySelectorAll('#freq-chips .chip').forEach(el => el.classList.toggle('selected', el.dataset.value === defaultFreq));
+      // Default ritual select
+      const defaultRoutine = (currentRoutine === 'morning' || currentRoutine === 'evening') ? currentRoutine : 'shelf';
+      document.querySelectorAll('#routine-select .routine-opt').forEach(el => el.classList.toggle('selected', el.dataset.value === defaultRoutine));
+      openModal();
+    });
+    document.getElementById('fab-compat').addEventListener('click', showCompatModal);
+    document.getElementById('btn-compat-close').addEventListener('click', closeCompatModal);
+    document.getElementById('btn-cancel').addEventListener('click', closeModal);
+    document.getElementById('btn-save').addEventListener('click', addOrUpdateProduct);
+    document.getElementById('btn-catalog-search').addEventListener('click', () => {
+      const q = document.getElementById('catalog-query').value.trim();
+      if (!q) { showToast('Enter a product name to search'); return; }
+      searchCatalog(q);
+    });
+    document.getElementById('catalog-query').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); document.getElementById('btn-catalog-search').click(); }
+    });
+    document.getElementById('modal-overlay').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modal-overlay')) closeModal();
+    });
+    document.getElementById('compat-modal-overlay').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('compat-modal-overlay')) closeCompatModal();
+    });
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        switchToRoutine(tab.dataset.routine);
+      });
+    });
+    document.getElementById('freq-chips').addEventListener('click', (e) => {
+      const chip = e.target.closest('.chip');
+      if (!chip) return;
+      document.querySelectorAll('#freq-chips .chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+    });
+    document.getElementById('ingredient-chips').addEventListener('click', (e) => {
+      const chip = e.target.closest('.chip');
+      if (!chip) return;
+      chip.classList.toggle('selected');
+    });
+    document.getElementById('routine-select').addEventListener('click', (e) => {
+      const opt = e.target.closest('.routine-opt');
+      if (!opt) return;
+      document.querySelectorAll('#routine-select .routine-opt').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+    });
+    document.getElementById('global-search').addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      render();
+    });
+    document.getElementById('product-ingredients-text').addEventListener('blur', () => {
+      const text = document.getElementById('product-ingredients-text').value;
+      const tags = autoTagFromText(text);
+      if (tags.length) {
+        document.querySelectorAll('#ingredient-chips .chip').forEach(chip => {
+          if (tags.includes(chip.dataset.value)) chip.classList.add('selected');
+        });
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { closeModal(); closeCompatModal(); closeRemindModal(); closeJournalModal(); }
+    });
+
+    // Journal calendar interactions
+    document.getElementById('cal-prev').addEventListener('click', () => {
+      calMonth--;
+      if (calMonth < 0) { calMonth = 11; calYear--; }
+      renderCalendar();
+    });
+    document.getElementById('cal-next').addEventListener('click', () => {
+      calMonth++;
+      if (calMonth > 11) { calMonth = 0; calYear++; }
+      renderCalendar();
+    });
+    document.getElementById('cal-grid').addEventListener('click', (e) => {
+      const day = e.target.closest('.cal-day');
+      if (!day) return;
+      openJournalDay(day.dataset.date);
+    });
+    document.getElementById('concern-chips').addEventListener('click', (e) => {
+      const chip = e.target.closest('.chip');
+      if (chip) chip.classList.toggle('selected');
+    });
+    document.getElementById('factor-chips').addEventListener('click', (e) => {
+      const chip = e.target.closest('.chip');
+      if (chip) chip.classList.toggle('selected');
+    });
+    document.getElementById('btn-journal-save').addEventListener('click', saveJournalDay);
+    document.getElementById('btn-journal-clear').addEventListener('click', clearJournalDay);
+    document.getElementById('journal-modal-overlay').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('journal-modal-overlay')) closeJournalModal();
+    });
+
+    // ---------- Reminders ----------
+    const REMIND_KEY = 'skincare-scoop-reminders-v1';
+    let reminders = {
+      daily: { enabled: false, am: '07:30', pm: '21:00', lastAm: null, lastPm: null },
+      facial: { enabled: false, interval: 'monthly', nextDate: null, lastNotified: null }
+    };
+    let remindCheckTimer = null;
+
+    function loadReminders() {
+      try {
+        if (!canUseStorage()) return;
+        const raw = localStorage.getItem(REMIND_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          reminders = { ...reminders, ...parsed, daily: { ...reminders.daily, ...(parsed.daily || {}) }, facial: { ...reminders.facial, ...(parsed.facial || {}) } };
+        }
+      } catch (e) { console.warn(e); }
+    }
+
+    function saveReminders() {
+      try {
+        if (canUseStorage()) localStorage.setItem(REMIND_KEY, JSON.stringify(reminders));
+      } catch (e) { console.warn(e); }
+    }
+
+    function defaultFacialDate() {
+      const d = new Date();
+      d.setMonth(d.getMonth() + 1);
+      return d.toISOString().slice(0, 10);
+    }
+
+    function openRemindModal() {
+      document.getElementById('toggle-daily').classList.toggle('on', !!reminders.daily.enabled);
+      document.getElementById('time-am').value = reminders.daily.am || '07:30';
+      document.getElementById('time-pm').value = reminders.daily.pm || '21:00';
+      document.getElementById('toggle-facial').classList.toggle('on', !!reminders.facial.enabled);
+      document.getElementById('facial-interval').value = reminders.facial.interval || 'monthly';
+      document.getElementById('facial-next').value = reminders.facial.nextDate || defaultFacialDate();
+      updateRemindStatusUI();
+      document.getElementById('remind-modal-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeRemindModal() {
+      document.getElementById('remind-modal-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function updateRemindStatusUI() {
+      const dailyEl = document.getElementById('status-daily');
+      const facialEl = document.getElementById('status-facial');
+      if (reminders.daily.enabled) {
+        dailyEl.textContent = `On · Morning ${reminders.daily.am} · Evening ${reminders.daily.pm}`;
+        dailyEl.className = 'reminder-status active';
+      } else {
+        dailyEl.textContent = 'Off';
+        dailyEl.className = 'reminder-status';
+      }
+      if (reminders.facial.enabled) {
+        const label = reminders.facial.interval === 'weekly' ? 'Weekly' : reminders.facial.interval === 'quarterly' ? 'Quarterly' : 'Monthly';
+        facialEl.textContent = `On · ${label} · Next: ${reminders.facial.nextDate || '—'}`;
+        facialEl.className = 'reminder-status active';
+      } else {
+        facialEl.textContent = 'Off';
+        facialEl.className = 'reminder-status';
+      }
+    }
+
+    async function ensureNotificationPermission() {
+      if (!('Notification' in window)) {
+        showToast('Notifications not supported in this browser');
+        return false;
+      }
+      if (Notification.permission === 'granted') return true;
+      if (Notification.permission === 'denied') {
+        showToast('Notifications blocked — enable them in browser settings');
+        return false;
+      }
+      const result = await Notification.requestPermission();
+      return result === 'granted';
+    }
+
+    function sendNotification(title, body) {
+      if (!('Notification' in window) || Notification.permission !== 'granted') return;
+      try {
+        new Notification(title, { body, icon: undefined, tag: 'skincare-scoop-' + Date.now() });
+      } catch (e) {
+        console.warn('Notification failed', e);
+      }
+    }
+
+    function advanceFacialDate(fromDateStr, interval) {
+      const d = fromDateStr ? new Date(fromDateStr + 'T12:00:00') : new Date();
+      if (interval === 'weekly') d.setDate(d.getDate() + 7);
+      else if (interval === 'quarterly') d.setMonth(d.getMonth() + 3);
+      else d.setMonth(d.getMonth() + 1);
+      return d.toISOString().slice(0, 10);
+    }
+
+    function checkReminders() {
+      const now = new Date();
+      const today = now.toISOString().slice(0, 10);
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      const current = hh + ':' + mm;
+
+      // Daily AM / PM
+      if (reminders.daily.enabled) {
+        if (current === reminders.daily.am && reminders.daily.lastAm !== today) {
+          reminders.daily.lastAm = today;
+          saveReminders();
+          sendNotification('Morning skincare ☀️', 'Time for your morning ritual. Cleanse, treat, moisturize, protect.');
+          showToast('Morning skincare reminder');
+        }
+        if (current === reminders.daily.pm && reminders.daily.lastPm !== today) {
+          reminders.daily.lastPm = today;
+          saveReminders();
+          sendNotification('Evening skincare 🌙', 'Time for your evening ritual. Double cleanse and treat.');
+          showToast('Evening skincare reminder');
+        }
+      }
+
+      // Professional facial
+      if (reminders.facial.enabled && reminders.facial.nextDate) {
+        if (today >= reminders.facial.nextDate && reminders.facial.lastNotified !== reminders.facial.nextDate) {
+          reminders.facial.lastNotified = reminders.facial.nextDate;
+          const interval = reminders.facial.interval || 'monthly';
+          reminders.facial.nextDate = advanceFacialDate(reminders.facial.nextDate, interval);
+          saveReminders();
+          sendNotification('Professional facial 💆', 'Time to book or enjoy your facial. Next reminder set automatically.');
+          showToast('Facial reminder — next date updated');
+          updateRemindStatusUI();
+        }
+      }
+    }
+
+    function startRemindChecker() {
+      if (remindCheckTimer) clearInterval(remindCheckTimer);
+      checkReminders();
+      remindCheckTimer = setInterval(checkReminders, 30000); // every 30s
+    }
+
+    document.getElementById('fab-remind').addEventListener('click', openRemindModal);
+    document.getElementById('btn-remind-cancel').addEventListener('click', closeRemindModal);
+    document.getElementById('remind-modal-overlay').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('remind-modal-overlay')) closeRemindModal();
+    });
+
+    document.getElementById('toggle-daily').addEventListener('click', function () {
+      this.classList.toggle('on');
+    });
+    document.getElementById('toggle-facial').addEventListener('click', function () {
+      this.classList.toggle('on');
+    });
+
+    document.getElementById('btn-remind-save').addEventListener('click', async () => {
+      const dailyOn = document.getElementById('toggle-daily').classList.contains('on');
+      const facialOn = document.getElementById('toggle-facial').classList.contains('on');
+
+      if (dailyOn || facialOn) {
+        const ok = await ensureNotificationPermission();
+        if (!ok && dailyOn) {
+          // still save settings; in-app toast will still fire when tab is open
+        }
+      }
+
+      reminders.daily.enabled = dailyOn;
+      reminders.daily.am = document.getElementById('time-am').value || '07:30';
+      reminders.daily.pm = document.getElementById('time-pm').value || '21:00';
+      reminders.facial.enabled = facialOn;
+      reminders.facial.interval = document.getElementById('facial-interval').value || 'monthly';
+      reminders.facial.nextDate = document.getElementById('facial-next').value || defaultFacialDate();
+
+      saveReminders();
+      updateRemindStatusUI();
+      startRemindChecker();
+      closeRemindModal();
+      showToast('Reminders saved');
+    });
+
+    window.moveProduct = moveProduct;
+    window.editProduct = editProduct;
+    window.deleteProduct = deleteProduct;
+    window.toggleIngredients = toggleIngredients;
+
+    load();
+    loadJournal();
+    loadReminders();
+    if (!storageAvailable) {
+      const banner = document.getElementById('storage-banner');
+      if (banner) banner.style.display = 'block';
+    }
+    render();
+    renderCalendar();
+    startRemindChecker();
+  </script>
+</body>
+</html>
